@@ -1,50 +1,48 @@
-# Actividad 1: Instalación de Terraform en Debian
+# Actividad 2: Configuración inicial de proveedor Proxmox
 
 ## Descripción
-En esta actividad aprenderás a instalar Terraform en un sistema operativo Debian, lo cual es fundamental para automatizar el despliegue de infraestructura en entornos como Proxmox.
+En esta actividad configurarás Terraform para conectarse con un clúster Proxmox. Esto implica definir el proveedor Telmate/proxmox y sus credenciales.
 
 ## Requisitos
-- Máquina virtual o servidor con Debian instalado.
-- Acceso a internet.
+- Terraform instalado (Actividad 1).
+- Acceso a un servidor Proxmox con permisos de API.
 
-## Objetivo
-Instalar Terraform y verificar su funcionamiento.
+### 🎯 Objetivo
+Configurar Terraform para conectarse con un entorno Proxmox.
 
-## Entrega
-Captura de pantalla del resultado de `terraform --version`.
+### Entrega
+Incluir captura de pantalla del resultado de terraform init.
 
 ## Pasos a seguir
 
-1. **Actualizar el sistema**
+1. **Crear el archivo providers.tf**
    ```bash
-   sudo apt update && sudo apt upgrade -y
+      terraform {
+     required_providers {
+       proxmox = {
+         source = "Telmate/proxmox"
+         version = "3.0.1-rc3"
+       }
+     }
+   }
+
+   provider "proxmox" {
+     pm_tls_insecure      = true
+     pm_api_url           = "https://localhost:8006/api2/json"
+     pm_api_token_id      = "terra@pve!te"
+     pm_api_token_secret  = "69622"
+   }
    ```
    
-2. **Instalar dependencias necesarias**
+2. **Inicializar Terraform**
    ```bash
-   sudo apt install -y curl wget gnupg software-properties-common
+   terraform init
    ```
 
-3. **Descargar e instalar Terraform - Descarga la última versión estable:**
+3. **Verificar conexión**
    ```bash
-   wget https://releases.hashicorp.com/terraform/1.7.5/terraform_1.7.5_linux_amd64.zip
+   terraform plan
    ```
-   
-   Descomprime el archivo:
-   ```bash
-   unzip terraform_1.7.5_linux_amd64.zip
-   ```
-   
-   Mueve el binario al directorio /usr/local/bin/:
-   ```bash
-   sudo mv terraform /usr/local/bin/
-   ```
-
-5. **Verificar la instalación**
-   ```bash
-   terraform --version
-   ```
-   
 7. **Opcional: Configurar autocompletado**
    ```bash
    terraform -install-autocomplete

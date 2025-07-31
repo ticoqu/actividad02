@@ -92,8 +92,8 @@ curl -k -H "Authorization: PVEAPIToken=terraform@pve!terraform-token=XXXXXXXXXXX
 
 **8. Crear el archivo providers.tf**
    ```bash
-      terraform {
-     required_providers {
+terraform {
+   required_providers {
        proxmox = {
          source = "Telmate/proxmox"
          version = "3.0.1-rc3"

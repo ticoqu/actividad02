@@ -15,6 +15,50 @@ Incluir captura de pantalla del resultado de terraform init.
 
 ## Pasos a seguir
 
+**1. Crear un usuario en Proxmox**
+
+Ir a: Datacenter → Permissions → Users → Add
+
+- Crear un usuario: terraform@pve
+- Realm: PVE
+- Password: contrasenia
+- Expire: nunca
+
+**2. Crear un rol limitado**
+Ir a: Datacenter → Permissions → Roles → Add
+Crear el rol TerraformRole con estas privilegios:
+VM.Audit
+VM.Console
+VM.Monitor
+VM.PowerMgmt
+VM.Config.Disk
+VM.Config.CPU
+VM.Config.Memory
+VM.Config.Network
+VM.Allocate
+Datastore.AllocateSpace
+Datastore.Audit
+Sys.Audit
+
+Este rol permitirá:
+
+- Crear/modificar/manejar VMs
+- Leer y auditar nodos y almacenamiento
+
+**3. Asignar el rol al usuario**
+Ir a: Datacenter → Permissions → Add
+
+User: terraform@pve
+Role: TerraformRole
+
+Propagate: (para aplicar recursivamente)
+
+**4. Verificar que el usuario puede usar la API**
+curl -k -d "username=terraform@pve&password=TU_PASSWORD" https://PROXMOX_IP:8006/api2/json/access/ticket
+
+Respuesta JSON con un ticket de sesión y CSRF token.
+
+
 1. **Crear el archivo providers.tf**
    ```bash
       terraform {

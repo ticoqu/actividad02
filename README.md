@@ -67,9 +67,9 @@ Ir a: Datacenter → Permissions → API Tokens → Add
 
 Al crear el token, se obtendrá:
 
-ID: terraform@pve!terraform-token
-Secret: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-**Importante:** Guarda el secret — no podrás volver a verlo.
+- ID: terraform@pve!terraform-token
+- Secret: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+- **Importante:** Guarda el secret — no podrás volver a verlo.
 
 **6. Dar permisos al API Token**
 Ir a: Datacenter → Permissions → Add

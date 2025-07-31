@@ -39,6 +39,16 @@ Crear el rol TerraformRole con estas privilegios:
 - Datastore.AllocateSpace
 - Datastore.Audit
 - Sys.Audit
+- Pool.Allocate
+- Sys.Console
+- Sys.Modify
+- VM.Clone
+- VM.Config.CDROM
+- VM.Config.Cloudinit
+- VM.Config.HWType
+- VM.Config.Options
+- VM.Migrate
+- SDN.Use
 
 Este rol permitirá:
 

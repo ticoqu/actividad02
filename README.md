@@ -7,7 +7,7 @@ En esta actividad configurarás Terraform para conectarse con un clúster Proxmo
 - Terraform instalado (Actividad 1).
 - Acceso a un servidor Proxmox con permisos de API.
 
-### 🎯 Objetivo
+### Objetivo
 Configurar Terraform para conectarse con un entorno Proxmox.
 
 ### Entrega
@@ -27,18 +27,18 @@ Ir a: Datacenter → Permissions → Users → Add
 **2. Crear un rol limitado**
 Ir a: Datacenter → Permissions → Roles → Add
 Crear el rol TerraformRole con estas privilegios:
-VM.Audit
-VM.Console
-VM.Monitor
-VM.PowerMgmt
-VM.Config.Disk
-VM.Config.CPU
-VM.Config.Memory
-VM.Config.Network
-VM.Allocate
-Datastore.AllocateSpace
-Datastore.Audit
-Sys.Audit
+- VM.Audit
+- VM.Console
+- VM.Monitor
+- VM.PowerMgmt
+- VM.Config.Disk
+- VM.Config.CPU
+- VM.Config.Memory
+- VM.Config.Network
+- VM.Allocate
+- Datastore.AllocateSpace
+- Datastore.Audit
+- Sys.Audit
 
 Este rol permitirá:
 
@@ -48,7 +48,7 @@ Este rol permitirá:
 **3. Asignar el rol al usuario**
 Ir a: Datacenter → Permissions → Add
 
-User: terraform@pve
+User: terraform
 Role: TerraformRole
 
 Propagate: (para aplicar recursivamente)
@@ -58,8 +58,37 @@ curl -k -d "username=terraform@pve&password=TU_PASSWORD" https://PROXMOX_IP:8006
 
 Respuesta JSON con un ticket de sesión y CSRF token.
 
+**4. Crear un API Token para el usuario**
+Ir a: Datacenter → Permissions → API Tokens → Add
 
-1. **Crear el archivo providers.tf**
+- **User:** `terraform`  
+- **Token ID:** `terraform-token`    
+
+Al crear el token, se obtendrá:
+
+ID: terraform@pve!terraform-token
+Secret: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+**Importante:** Guarda el secret — no podrás volver a verlo.
+
+**5. Dar permisos al API Token**
+Ir a: Datacenter → Permissions → Add
+- **Path:** `/`
+- **User/Token:** `terraform@pve!terraform-token`
+- **Role:** `TerraformRole`
+
+Esto da acceso solo al token, sin afectar otros accesos del usuario `terraform@pve`.
+
+
+**6. Verificar que el token puede usar la API**
+
+```bash
+curl -k -H "Authorization: PVEAPIToken=terraform@pve!terraform-token=XXXXXXXXXXXXXXX" \
+  https://PROXMOX_IP:8006/api2/json/nodes
+
+Respuesta: un JSON con la lista de nodos.
+
+
+**7. Crear el archivo providers.tf**
    ```bash
       terraform {
      required_providers {
@@ -78,16 +107,16 @@ Respuesta JSON con un ticket de sesión y CSRF token.
    }
    ```
    
-2. **Inicializar Terraform**
+**8. Inicializar Terraform**
    ```bash
    terraform init
    ```
 
-3. **Verificar conexión**
+**9. Verificar conexión**
    ```bash
    terraform plan
    ```
-7. **Opcional: Configurar autocompletado**
+**10. Opcional: Configurar autocompletado**
    ```bash
    terraform -install-autocomplete
    ```

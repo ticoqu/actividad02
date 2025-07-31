@@ -54,11 +54,12 @@ Role: TerraformRole
 Propagate: (para aplicar recursivamente)
 
 **4. Verificar que el usuario puede usar la API**
+```bash
 curl -k -d "username=terraform@pve&password=TU_PASSWORD" https://PROXMOX_IP:8006/api2/json/access/ticket
-
+```
 Respuesta JSON con un ticket de sesión y CSRF token.
 
-**4. Crear un API Token para el usuario**
+**5. Crear un API Token para el usuario**
 Ir a: Datacenter → Permissions → API Tokens → Add
 
 - **User:** `terraform`  
@@ -70,7 +71,7 @@ ID: terraform@pve!terraform-token
 Secret: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 **Importante:** Guarda el secret — no podrás volver a verlo.
 
-**5. Dar permisos al API Token**
+**6. Dar permisos al API Token**
 Ir a: Datacenter → Permissions → Add
 - **Path:** `/`
 - **User/Token:** `terraform@pve!terraform-token`
@@ -79,7 +80,7 @@ Ir a: Datacenter → Permissions → Add
 Esto da acceso solo al token, sin afectar otros accesos del usuario `terraform@pve`.
 
 
-**6. Verificar que el token puede usar la API**
+**7. Verificar que el token puede usar la API**
 
 ```bash
 curl -k -H "Authorization: PVEAPIToken=terraform@pve!terraform-token=XXXXXXXXXXXXXXX" \
@@ -88,7 +89,7 @@ curl -k -H "Authorization: PVEAPIToken=terraform@pve!terraform-token=XXXXXXXXXXX
 Respuesta: un JSON con la lista de nodos.
 
 
-**7. Crear el archivo providers.tf**
+**8. Crear el archivo providers.tf**
    ```bash
       terraform {
      required_providers {
@@ -107,16 +108,16 @@ Respuesta: un JSON con la lista de nodos.
    }
    ```
    
-**8. Inicializar Terraform**
+**9. Inicializar Terraform**
    ```bash
    terraform init
    ```
 
-**9. Verificar conexión**
+**10. Verificar conexión**
    ```bash
    terraform plan
    ```
-**10. Opcional: Configurar autocompletado**
+**11. Opcional: Configurar autocompletado**
    ```bash
    terraform -install-autocomplete
    ```

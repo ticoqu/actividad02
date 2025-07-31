@@ -85,8 +85,9 @@ Esto da acceso solo al token, sin afectar otros accesos del usuario `terraform@p
 ```bash
 curl -k -H "Authorization: PVEAPIToken=terraform@pve!terraform-token=XXXXXXXXXXXXXXX" \
   https://PROXMOX_IP:8006/api2/json/nodes
+```
 
-Respuesta: un JSON con la lista de nodos.
+- Respuesta: un JSON con la lista de nodos.
 
 
 **8. Crear el archivo providers.tf**
